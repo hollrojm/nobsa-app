@@ -2,6 +2,12 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from datetime import date
 
+class UserRole(models.TextChoices):
+    SUPER_ADMIN = 'SUPER_ADMIN', 'Super Admin'
+    ADMIN = 'ADMIN', 'Admin'
+    CLIENT = 'CLIENT', 'Client'
+    MERCHAND = 'MERCHANDISER', 'Merchandiser'
+
 class User(AbstractUser):
     fullname = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
@@ -11,6 +17,8 @@ class User(AbstractUser):
     nationality = models.CharField(max_length=100)
     birthdate = models.DateField()
     firebase_uid = models.CharField(max_length=255, null=True, blank=True)
+    role = models.CharField(max_length=50, choices=UserRole.choices, default=UserRole.CLIENT)
+    is_active = models.BooleanField(default=True)
 
     @property
     def age(self):
